@@ -1,0 +1,6 @@
+Config
+  { position = Top
+  , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
+               , Run UnsafeStdinReader ]
+  , template = "%UnsafeStdinReader% }{ <fc=#FF0000>%theDate%</fc>"
+  }
