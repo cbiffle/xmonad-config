@@ -1,0 +1,13 @@
+XMonad Configuration
+====================
+
+This is my current configuration for the XMonad window manager.  I run XMonad
+without a desktop environment.
+
+This configuration includes:
+
+- My custom "Terminal" layout, which sizes xterms to 80 columns.
+- Support for two monitors with separate xmobars.
+- Cutesy layout icons in place of names.
+- A custom layout modifier on one workspace (3).
+- Volume and backlight controls.
