@@ -24,7 +24,7 @@ modm = mod4Mask
 
 cbiffleConfig base hmap = base
   { layoutHook = avoidStruts $ onWorkspace "3" imLayout $ cbiffleLayout
-  , manageHook = manageDocks
+  , manageHook = manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
 
   , modMask = modm
