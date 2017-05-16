@@ -5,7 +5,7 @@ import qualified XMonad.StackSet as W
 
 import XMonad.Actions.FocusNth (focusNth)
 import XMonad.Hooks.DynamicLog (xmobarColor, shorten, PP(..), defaultPP, wrap)
-import XMonad.Hooks.EwmhDesktops (fullscreenEventHook)
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, manageDocks)
 import XMonad.Hooks.Multibar (xmobars, multiPP)
 
@@ -22,7 +22,7 @@ import System.Exit (exitWith, ExitCode(ExitSuccess))
 
 modm = mod4Mask
 
-cbiffleConfig base hmap = base
+cbiffleConfig base hmap = ewmh $ base
   { layoutHook = avoidStruts $ onWorkspace "3" imLayout $ cbiffleLayout
   , manageHook = manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
