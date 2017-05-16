@@ -7,3 +7,4 @@ stack build
 OUT="$(stack path --dist-dir)/build/$EXE_NAME/$EXE_NAME"
 
 [[ -f $OUT ]] && mv -u $OUT $1
+exit 0
