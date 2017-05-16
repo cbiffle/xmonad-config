@@ -49,7 +49,7 @@ cbiffleLayout =
   ||| rename (icon "layout-tall") (Tall 1 (3/100) (1/2))
   where rename s l = renamed [Replace s] l
 
-imLayout = withIM (1/5) (And (ClassName "Pidgin") (Role "buddy_list")) cbiffleLayout
+imLayout = withIM (1/4) (And (ClassName "Pidgin") (Role "buddy_list")) cbiffleLayout
 
 -- My workspaces are on the F-keys, not the numerals.
 cbiffleUnwantedKeys = [(modm .|. shiftMask, n) | n <- [xK_1 .. xK_9]]
