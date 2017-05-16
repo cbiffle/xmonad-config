@@ -11,3 +11,47 @@ This configuration includes:
 - Cutesy layout icons in place of names.
 - A custom layout modifier on one workspace (3).
 - Volume and backlight controls.
+
+
+Bootstrapping with Stack
+------------------------
+
+Ensure that Stack is in your `PATH`.
+
+Clone this repo as `~/.xmonad`.
+
+In `~/.xmonad`, run:
+
+    stack setup
+    stack build
+    stack install xmonad
+
+This will install an `xmonad` binary in `~/.local/bin`.  Ensure this directory
+is in your `PATH`.
+
+Arrange for your X startup to run `~/.local/bin/xmonad`.  In my case, I placed
+an xsession file in `/usr/share/xsessions` containing
+
+    [Desktop Entry]
+    Encoding=UTF-8
+    Type=Application
+    Name=Xmonad
+    Comment=xmonad
+    Exec=user-xmonad
+    Icon=xmonad
+    Terminal=false
+    StartupNotify=false
+    Categories=Application;
+
+and then installed a shell script at `/usr/local/bin/user-xmonad` containing
+
+    #!/bin/bash
+
+    exec ~/.local/bin/xmonad
+
+It is important **not** to run your window manager using `stack exec`, because
+this will cause all processes in your session to inherit stack's local
+environment (GHC location, etc.), possibly breaking other Haskell development.
+
+Once you've gone through all this once, the file `~/.xmonad/build` ensures that
+recompilation happens correctly.

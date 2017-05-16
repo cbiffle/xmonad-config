@@ -6,7 +6,7 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.FocusNth (focusNth)
 import XMonad.Hooks.DynamicLog (xmobarColor, shorten, PP(..), defaultPP, wrap)
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
-import XMonad.Hooks.ManageDocks (avoidStruts, manageDocks)
+import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
 import XMonad.Hooks.Multibar (xmobars, multiPP)
 
 import XMonad.Layout.IM (withIM, Property(Title, Role, And, ClassName))
@@ -22,7 +22,7 @@ import System.Exit (exitWith, ExitCode(ExitSuccess))
 
 modm = mod4Mask
 
-cbiffleConfig base hmap = ewmh $ base
+cbiffleConfig base hmap = ewmh $ docks $ base
   { layoutHook = avoidStruts $ onWorkspace "3" imLayout $ cbiffleLayout
   , manageHook = manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
@@ -55,8 +55,6 @@ imLayout = withIM (1/4) (And (ClassName "Pidgin") (Role "buddy_list")) cbiffleLa
 cbiffleUnwantedKeys = [(modm .|. shiftMask, n) | n <- [xK_1 .. xK_9]]
 
 cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
-
-xF86XK_AudioMicMute = 0x1008FFB2
 
 actionKeys =
   [ ((modm,                 xK_r), spawn "dmenu_run -p Run: -b")

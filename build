@@ -1,0 +1,9 @@
+#!/bin/bash -eu
+
+EXE_NAME=cbiffle-xmonad
+
+cd ~/.xmonad
+stack build
+OUT="$(stack path --dist-dir)/build/$EXE_NAME/$EXE_NAME"
+
+[[ -f $OUT ]] && mv -u $OUT $1
