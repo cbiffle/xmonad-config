@@ -1,6 +1,17 @@
 Config
   { position = Top
   , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
+               , Run Battery [ "-S", "true"  -- prefixes
+                             , "-t", "<acstatus> <watts> <leftvbar> <timeleft>"
+                             , "-L", "10"
+                             , "-H", "80"
+                             , "-h", "green"
+                             , "-l", "red"
+                             , "--"
+                             , "-O", "<fc=green>AC</fc>"
+                             , "-i", "AC"
+                             , "-o", ""
+                             ] 10
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{ <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{ %battery% | <fc=#FF0000>%theDate%</fc>"
   }

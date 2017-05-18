@@ -146,11 +146,11 @@ cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
 -------------------------------------------------------------------------------
 -- Utilities for interacting with the system
 
-setVolume s = spawn $ "amixer set Master " ++ s ++ " unmute"
+setVolume s = spawn $ "amixer -D pulse set Master " ++ s ++ " unmute"
 raiseVolume = setVolume "5%+"
 lowerVolume = setVolume "5%-"
-muteAudio = spawn "amixer set Master toggle"
-muteMic = spawn "amixer set Capture toggle"
+muteAudio = spawn "amixer -D pulse set Master toggle"
+muteMic = spawn "amixer -D pulse set Capture toggle"
 
 raiseBrightness = spawn "xbacklight +10"
 lowerBrightness = spawn "xbacklight -10"
