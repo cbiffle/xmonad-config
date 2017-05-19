@@ -1,6 +1,14 @@
 Config
   { position = Top
   , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
+               , Run Wireless "wlp3s0"
+                   [ "-t", "<essid> <qualityvbar>"
+                   , "-L", "50"
+                   , "-H", "80"
+                   , "-h", "green"
+                   , "-l", "red"
+                   , "-x", "offline"
+                   ] 5
                , Run Battery [ "-S", "true"  -- prefixes
                              , "-t", "<acstatus> <watts> <leftvbar> <timeleft>"
                              , "-L", "10"
@@ -9,9 +17,9 @@ Config
                              , "-l", "red"
                              , "--"
                              , "-O", "<fc=green>AC</fc>"
-                             , "-i", "AC"
+                             , "-i", "<fc=#808080>AC</fc>"
                              , "-o", ""
                              ] 10
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{ %battery% | <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{ %wlp3s0wi% | %battery% | <fc=#FF0000>%theDate%</fc>"
   }
