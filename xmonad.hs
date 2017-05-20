@@ -31,6 +31,7 @@ cbiffleConfig base hmap = ewmh $ docks $ base
   , manageHook = manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
   , logHook = cbiffleLogHook hmap
+  , workspaces = cbiffleWorkspaces
 
   , modMask = modm
   , normalBorderColor = "#0000dd"   -- slightly subdued blue for inactive
@@ -39,6 +40,10 @@ cbiffleConfig base hmap = ewmh $ docks $ base
   , clickJustFocuses = False        -- pass first click through to app
   } `removeKeys` cbiffleUnwantedKeys
     `additionalKeys` cbiffleKeys
+
+-- My workspaces are numerically numbered starting at 1; I have 12 of them
+-- to correspond with my function keys.
+cbiffleWorkspaces = [show i | i <- [1..12 :: Integer]]
 
 -- Distributes log events across multiple XMobar instances (see
 -- XMonad.Hooks.Multibar in this same repo).
@@ -118,12 +123,8 @@ cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
       , ((0, xF86XK_MonBrightnessDown), lowerBrightness) -- control
       ]
 
-    -- My workspaces are numerically numbered starting at 1; I have 12 of them
-    -- to correspond with my function keys.
-    workspaces' = [show i | i <- [1..12 :: Integer]]
-
     workspaceKeys = [ ((modm .|. m, k), windows $ f i)
-                    | (i, k) <- zip workspaces' [xK_F1..]
+                    | (i, k) <- zip cbiffleWorkspaces [xK_F1..]
                     , (m, f) <- [ (0, W.view)
                                   -- Modm-Fx switches to workspace x.  If it is
                                   -- already on a display, focus moves to that
