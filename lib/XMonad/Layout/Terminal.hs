@@ -55,7 +55,7 @@ instance LayoutClass Terminal Window where
     doLayout (Terminal ncol _ fallback) r s = do
         let ws = W.integrate s
         fws <- mapM (widthCols fallback ncol) ws
-        return $ (zip ws (fillScreen 0 r fws), Nothing)
+        return (zip ws (fillScreen 0 r fws), Nothing)
 
     pureMessage (Terminal ncol delta fallback) m = fmap resize (fromMessage m)
         where resize Shrink
@@ -72,9 +72,9 @@ instance LayoutClass Terminal Window where
 widthCols :: Dimension -> Int -> Window -> X Dimension
 widthCols inc n w = withDisplay $ \d -> io $ do
     sh <- getWMNormalHints d w
-    bw <- fmap (fromIntegral . wa_border_width) $ getWindowAttributes d w
+    bw <- (fromIntegral . wa_border_width) <$> getWindowAttributes d w
     -- (SizeHints -> Maybe (Int, b)) -> Maybe Real
-    let widthHint f = f sh >>= return . fst
+    let widthHint f = fst <$> f sh
         oneCol      = fromMaybe inc $ widthHint sh_resize_inc
         base        = fromMaybe 0 $ widthHint sh_base_size
     return $ 2 * bw + base + fromIntegral n * oneCol
@@ -89,14 +89,14 @@ fillScreen :: Dimension    -- ^ Space between windows.
 fillScreen sp
            r@(Rectangle left top screenWidth screenHeight)
            w@(winWidth:winWidths)
-	| winWidth + sp <= screenWidth =
-		Rectangle left top winWidth screenHeight
-		  : fillScreen sp
+        | winWidth + sp <= screenWidth =
+                Rectangle left top winWidth screenHeight
+                  : fillScreen sp
                                (Rectangle (left + fromIntegral (winWidth + sp))
-			                  top
-			                  (screenWidth - winWidth - sp)
-					  screenHeight)
-			       winWidths
-	| otherwise = splitVertically (length w) r
+                                          top
+                                          (screenWidth - winWidth - sp)
+                                          screenHeight)
+                               winWidths
+        | otherwise = splitVertically (length w) r
 
 fillScreen _ _ [] = []

@@ -15,7 +15,7 @@ import System.IO (Handle, hPutStrLn)
 import Control.Applicative (liftA2, (<*), (<$>))
 import Graphics.X11.Xinerama (getScreenInfo)
 
-import Data.Traversable (traverse)
+import Data.Traversable (for)
 import XMonad.Util.Run (spawnPipe)
 
 --------------------------------------------------------------------------------
@@ -71,9 +71,9 @@ multiPP' dynlStr focusPP unfocusPP hmap = do
   wsmap <- xmobarVisibleWorkspaces hmap
 
   -- msgs :: M.Map ScreenId String
-  msgs <- flip traverse wsmap $ \ws -> forkState $ do
-    let isFoc = (W.tag $ W.workspace $ W.current wset) == ws
-    modify $ \s -> s { windowset = W.view ws $ wset }
+  msgs <- for wsmap $ \ws -> forkState $ do
+    let isFoc = W.tag (W.workspace $ W.current wset) == ws
+    modify $ \s -> s { windowset = W.view ws wset }
     dynlStr $ if isFoc then focusPP else unfocusPP
 
   -- Correlate messages with handles by ScreenId, allowing omissions,
