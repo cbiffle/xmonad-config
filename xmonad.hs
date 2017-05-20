@@ -1,5 +1,6 @@
 import XMonad
 import Graphics.X11.ExtraTypes.XF86
+import Data.List (elemIndex)
 
 import qualified XMonad.StackSet as W
 
@@ -45,6 +46,8 @@ cbiffleConfig base hmap = ewmh $ docks $ base
 -- to correspond with my function keys.
 cbiffleWorkspaces = [show i | i <- [1..12 :: Integer]]
 
+workspaceNumber = flip elemIndex cbiffleWorkspaces
+
 -- Distributes log events across multiple XMobar instances (see
 -- XMonad.Hooks.Multibar in this same repo).
 cbiffleLogHook = multiPP
@@ -66,11 +69,10 @@ cbiffleLogHook = multiPP
       , ppWsSep = ""
           -- Don't bother separating workspace indicators.
       }
-    -- Make workspace indicators clickable when xdotool is available.  I'm
-    -- experimenting with this; it isn't perfect.  Note that this relies on the
-    -- definition of modm.
-    clickableWS f ws =
-      "<action=`xdotool key super+F" ++ ws ++ "`>" ++ f ws ++ "</action>"
+    -- Make workspace indicators clickable when wmctrl is available.
+    clickableWS f ws = case workspaceNumber ws of
+        Nothing -> f ws
+        Just n -> "<action=`wmctrl -s " ++ show n ++ "`>" ++ f ws ++ "</action>"
     -- Prepare an arbitrary raw string for presentation using XMobar's unsafe
     -- stdin formatter.  This escapes any embedded sequences that XMobar might
     -- otherwise interpret.
