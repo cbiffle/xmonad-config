@@ -16,6 +16,11 @@ This configuration includes:
 Bootstrapping with Stack
 ------------------------
 
+Link either the desktop or laptop (or a completely different) xmobar
+configuration into place:
+
+    ln -s xmobarrc-desktop xmobarrc.0
+
 Ensure that Stack is in your `PATH`.
 
 Clone this repo as `~/.xmonad`.
