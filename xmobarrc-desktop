@@ -1,6 +1,17 @@
 Config
   { position = Top
   , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
+               , Run MultiCpu
+                  [ "-t", "C:<autovbar>"
+                  , "-p", "3"
+                  , "-h", "red"
+                  ] 10
+               , Run Memory
+                  [ "-t", "M:<usedvbar>"
+                  , "-h", "red"
+                  , "-l", "green"
+                  ] 20
+               , Run ThermalZone 1 [] 30
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{ <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{%multicpu% %thermal1% %memory% | <fc=#FF0000>%theDate%</fc>"
   }

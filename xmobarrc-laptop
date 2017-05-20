@@ -45,6 +45,7 @@ Config
                   , "-h", "red"
                   , "-l", "green"
                   ] 20
+               , Run ThermalZone 1 [] 30
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{%multicpu% %memory% | %wlp3s0wi% | %battery% %bat0%%bat1% | <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{%multicpu% %thermal1% %memory% | %wlp3s0wi% | %battery% %bat0%%bat1% | <fc=#FF0000>%theDate%</fc>"
   }
