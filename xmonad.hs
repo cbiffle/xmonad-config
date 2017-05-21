@@ -97,9 +97,17 @@ imLayout = withIM (1/4)
                   (And (ClassName "Pidgin") (Role "buddy_list"))
                   cbiffleLayout
 
--- My workspaces are on the F-keys, not the numerals.  Unmap the mod-numeral
--- keys.  We'll remap them shortly.
-cbiffleUnwantedKeys = [(modm .|. shiftMask, n) | n <- [xK_1 .. xK_9]]
+cbiffleUnwantedKeys =
+  -- My workspaces are on the F-keys, not the numerals.  Unmap the mod-numeral
+  -- keys.  We'll remap them shortly.
+  [(modm .|. shiftMask, n) | n <- [xK_1 .. xK_9]] ++
+  [(modm, n) | n <- [xK_1 .. xK_9]] ++
+  [ (modm, xK_p)
+  , (modm .|. shiftMask, xK_p)
+  , (modm, xK_m)
+  , (modm, xK_Return)
+  , (modm .|. shiftMask, xK_q)
+  ] 
 
 cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
   where
