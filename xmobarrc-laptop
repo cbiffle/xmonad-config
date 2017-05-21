@@ -47,5 +47,5 @@ Config
                   ] 20
                , Run ThermalZone 1 [] 30
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{%multicpu% %thermal1% %memory% | %wlp3s0wi% | %battery% %bat0%%bat1% | <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal1% %memory%</action> | <action=`xterm -e 'sudo wifi-menu'`>%wlp3s0wi%</action> | %battery% %bat0%%bat1% | <fc=#FF0000>%theDate%</fc>"
   }
