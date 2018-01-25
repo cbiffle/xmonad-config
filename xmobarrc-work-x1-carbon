@@ -1,0 +1,37 @@
+Config
+  { position = Top
+  , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
+               , Run Wireless "wlp4s0"
+                   [ "-t", "<essid> <qualityvbar>"
+                   , "-L", "50"
+                   , "-H", "80"
+                   , "-h", "green"
+                   , "-l", "red"
+                   , "-x", "offline"
+                   ] 20
+               , Run Battery
+                  [ "-S", "True"  -- suffixes
+                  , "-t", "<acstatus> <watts> <timeleft> <leftvbar>"
+                  , "-L", "10"
+                  , "-H", "80"
+                  , "-h", "green"
+                  , "-l", "red"
+                  , "--"
+                  , "-O", "<fc=green>AC</fc>"
+                  , "-i", "<fc=#808080>AC</fc>"
+                  , "-o", ""
+                  ] 20
+               , Run MultiCpu
+                  [ "-t", "C:<autovbar>"
+                  , "-p", "3"
+                  , "-h", "red"
+                  ] 10
+               , Run Memory
+                  [ "-t", "M:<usedvbar>"
+                  , "-h", "red"
+                  , "-l", "green"
+                  ] 20
+               , Run ThermalZone 1 [] 30
+               , Run UnsafeStdinReader ]
+  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal1% %memory%</action> | %wlp4s0wi% | %battery% | <fc=#FF0000>%theDate%</fc>"
+  }
