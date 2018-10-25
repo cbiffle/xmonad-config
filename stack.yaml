@@ -3,8 +3,18 @@ resolver: lts-8.13
 packages:
 - '.'
 
-extra-deps: []
+extra-deps:
+- xmobar-0.28.1
+- iwlib-0.1.0@sha256:226e4582d6878166a172ff98c868e25c4ed478ab28ab493498e464b1fe19d39a
+- parsec-numbers-0.1.0@sha256:60fa05b1c16050dffd0e28cecb682a021eeec1be6f34dc9d901a38c90182f289
 
-flags: {}
+flags:
+  xmonad-contrib:
+    use_xft: true
+  xmobar:
+    with_utf8: true
+    with_xft: true
+    with_iwlib: true
+    with_xpm: true
 
 extra-package-dbs: []
