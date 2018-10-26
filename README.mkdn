@@ -9,7 +9,6 @@ This configuration includes:
 - My custom "Terminal" layout, which sizes xterms to 80 columns.
 - Support for two monitors with separate xmobars.
 - Cutesy layout icons in place of names.
-- A custom layout modifier on one workspace (3).
 - Volume and backlight controls.
 
 
@@ -30,29 +29,29 @@ In `~/.xmonad`, run:
     stack setup
     stack build
     stack install xmonad
+    stack install xmobar
 
 This will install an `xmonad` binary in `~/.local/bin`.  Ensure this directory
 is in your `PATH`.
 
-Arrange for your X startup to run `~/.local/bin/xmonad`.  In my case, I placed
-an xsession file in `/usr/share/xsessions` containing
+Arrange for your X startup to run `~/.local/bin/xmonad`.  In my case, I added an
+`.xsession` file my homedir with the contents:
 
+    #!/bin/sh
+
+    exec ~/.local/bin/xmonad
+
+If you are using LightDM, the trick to getting it to run `~/.xsession` is to
+create an xsession desktop entry with the binary specified as `default`. This is
+hardcoded to trigger magic behavior, and is poorly documented, so I'm reminding
+myself here.
+    
     [Desktop Entry]
     Encoding=UTF-8
     Type=Application
-    Name=Xmonad
-    Comment=xmonad
-    Exec=user-xmonad
-    Icon=xmonad
+    Name=User .xsession
+    Exec=default
     Terminal=false
-    StartupNotify=false
-    Categories=Application;
-
-and then installed a shell script at `/usr/local/bin/user-xmonad` containing
-
-    #!/bin/bash
-
-    exec ~/.local/bin/xmonad
 
 It is important **not** to run your window manager using `stack exec`, because
 this will cause all processes in your session to inherit stack's local
