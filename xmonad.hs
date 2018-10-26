@@ -86,7 +86,9 @@ cbiffleLayout =
   -- A tabbed fullscreen layout that I find useful for web and graphics work.
   ||| rename (icon "layout-tabbed")
              (noBorders $ tabbed shrinkText def
-              { activeColor = "#118811"
+              { fontName = "xft:Anonymous Pro:size=7"
+              , decoHeight = 30
+              , activeColor = "#118811"
               , activeTextColor = "black"
               , inactiveColor = "black"
               , inactiveTextColor = "#118811"

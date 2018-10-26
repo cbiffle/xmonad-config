@@ -1,7 +1,8 @@
 Config
-  { position = Top
+  { font = "xft:Anonymous Pro:size=7,Noto Sans Mono:size=7"
+  , position = Top
   , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
-               , Run Wireless "wlp3s0"
+               , Run Wireless "wlp2s0"
                    [ "-t", "<essid> <qualityvbar>"
                    , "-L", "50"
                    , "-H", "80"
@@ -28,13 +29,6 @@ Config
                   , "-h", "green"
                   , "-l", "red"
                   ] 20 "bat0"
-               , Run BatteryN ["BAT1"]
-                  [ "-t", "<leftvbar>"
-                  , "-L", "10"
-                  , "-H", "80"
-                  , "-h", "green"
-                  , "-l", "red"
-                  ] 20 "bat1"
                , Run MultiCpu
                   [ "-t", "C:<autovbar>"
                   , "-p", "3"
@@ -47,5 +41,5 @@ Config
                   ] 20
                , Run ThermalZone 1 [] 30
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal1% %memory%</action> | <action=`xterm -e 'sudo wifi-menu'`>%wlp3s0wi%</action> | %battery% %bat0%%bat1% | <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal1% %memory%</action> | <action=`xterm -e 'sudo wifi-menu'`>%wlp2s0wi%</action> | %battery% %bat0% | <fc=#FF0000>%theDate%</fc>"
   }
