@@ -10,13 +10,13 @@ import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
 import XMonad.Hooks.Multibar (xmobars, multiPP)
 
-import XMonad.Layout.IM (withIM, Property(Role, And, ClassName))
-import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Renamed (renamed, Rename(..))
-import XMonad.Layout.Tabbed (simpleTabbed)
+import XMonad.Layout.Tabbed
 import XMonad.Layout.Terminal (terminal80)
+import XMonad.Layout.NoBorders (noBorders)
 
 import XMonad.Util.EZConfig (removeKeys, additionalKeys)
+import XMonad.Util.Font (Align(AlignLeft, AlignRight))
 
 import System.Exit (exitSuccess)
 
@@ -28,15 +28,15 @@ modm = mod4Mask
 
 -- Derives my config from a 'base'.
 cbiffleConfig base hmap = ewmh $ docks $ base
-  { layoutHook = avoidStruts $ onWorkspace "3" imLayout cbiffleLayout
+  { layoutHook = avoidStruts cbiffleLayout
   , manageHook = manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
   , logHook = cbiffleLogHook hmap
   , workspaces = cbiffleWorkspaces
 
   , modMask = modm
-  , normalBorderColor = "#0000dd"   -- slightly subdued blue for inactive
-  , focusedBorderColor = "#ff0000"  -- bright red for active
+  , normalBorderColor = "#111111"   -- slightly subdued blue for inactive
+  , focusedBorderColor = "#118811"  -- bright red for active
   , focusFollowsMouse = False       -- only change focus explicitly
   , clickJustFocuses = False        -- pass first click through to app
   } `removeKeys` cbiffleUnwantedKeys
@@ -55,7 +55,7 @@ cbiffleLogHook = multiPP
   (pp "grey" "grey" ("grey", "grey"))     -- inactive display(s)
   where
     pp currentC titleC (urgentFC, urgentBC) = def
-      { ppCurrent = clickableWS (xmobarColor currentC "" . wrap "[" "]" . cook)
+      { ppCurrent = xmobarColor currentC "" . wrap "[" "]" . cook
           -- Current is square-bracketed.
       , ppVisible = clickableWS (wrap "(" ")" . cook)
           -- Visible but non-focused workspace, round-bracketed.
@@ -84,7 +84,16 @@ cbiffleLayout =
   -- My font-sensitive terminal pane layout (default),
   renamed [CutWordsLeft 1, PrependWords (icon "layout-terminal")] terminal80
   -- A tabbed fullscreen layout that I find useful for web and graphics work.
-  ||| rename (icon "layout-tabbed") simpleTabbed
+  ||| rename (icon "layout-tabbed")
+             (noBorders $ tabbed shrinkText def
+              { activeColor = "#118811"
+              , activeTextColor = "black"
+              , inactiveColor = "black"
+              , inactiveTextColor = "#118811"
+              , activeBorderColor = "#118811"
+              , inactiveBorderColor = "black"
+              , windowTitleAddons = [("[", AlignLeft), ("]", AlignRight)]
+              })
   -- XMonad's classic Tall layout, with some tweaks.
   ||| rename (icon "layout-tall") (Tall 1 (3/100) (1/2))
   where
@@ -92,11 +101,6 @@ cbiffleLayout =
     -- is shorthand for discarding a layout's name and replacing it.
     rename s = renamed [Replace s]
     icon relpath = "<icon=/home/cbiffle/.xmonad/img/" ++ relpath ++ ".xbm/>"
-
--- Special layout for the workspace where I do IM.
-imLayout = withIM (1/4)
-                  (And (ClassName "Pidgin") (Role "buddy_list"))
-                  cbiffleLayout
 
 cbiffleUnwantedKeys =
   -- My workspaces are on the F-keys, not the numerals.  Unmap the mod-numeral
@@ -121,11 +125,15 @@ cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
           -- This effectively reboots the window manager.
       , ((modm .|. controlMask, xK_q), io exitSuccess)
           -- And Modm-CTRL-Q kills XMonad, logging out.
-      , ((modm .|. controlMask, xK_l), spawn "light-locker-command -l")
-          -- Modm-CTRL-L locks the screen when light-locker is running.
+      , ((modm .|. controlMask, xK_l), spawn "loginctl lock-session")
+          -- Modm-CTRL-L locks the screen.
     
-      -- Useful bindings for mdoern multimedia keyboards:
-      , ((0, xK_Print), spawn "scrot")  -- Print Screen takes a screenshot
+      -- Screen shots using PrintScreen
+      , ((0, xK_Print), spawn "scrot")
+      -- Area screenshots with CTRL-PrintScreen; there's a race condition
+      -- between XMonad and scrot here, so we sleep briefly (haaaack).
+      , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+      -- Useful bindings for modern multimedia keyboards:
       , ((0, xF86XK_AudioRaiseVolume), raiseVolume)   -- \
       , ((0, xF86XK_AudioLowerVolume), lowerVolume)   -- | audio
       , ((0, xF86XK_AudioMute),        muteAudio)     -- | keys
