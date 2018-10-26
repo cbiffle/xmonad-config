@@ -76,6 +76,7 @@ cbiffleLogHook = multiPP
     -- Prepare an arbitrary raw string for presentation using XMobar's unsafe
     -- stdin formatter.  This escapes any embedded sequences that XMobar might
     -- otherwise interpret.
+    cook "" = ""
     cook s = "<raw=" ++ show (length s) ++ ":" ++ s ++ "/>"
 
 -- I allow each workspace to switch between three layouts.
