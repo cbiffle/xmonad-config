@@ -28,15 +28,16 @@ modm = mod4Mask
 
 -- Derives my config from a 'base'.
 cbiffleConfig base hmap = ewmh $ docks $ base
-  { layoutHook = avoidStruts cbiffleLayout
-  , manageHook = manageDocks <+> manageHook base
+  { terminal = "urxvt"
+  , layoutHook = avoidStruts cbiffleLayout
+  , manageHook = (className =? "Logic" --> doIgnore) <+> manageDocks <+> manageHook base
   , handleEventHook = handleEventHook base <+> fullscreenEventHook
   , logHook = cbiffleLogHook hmap
   , workspaces = cbiffleWorkspaces
 
   , modMask = modm
-  , normalBorderColor = "#111111"   -- slightly subdued blue for inactive
-  , focusedBorderColor = "#118811"  -- bright red for active
+  , normalBorderColor = "#333333"
+  , focusedBorderColor = "#118811"
   , focusFollowsMouse = False       -- only change focus explicitly
   , clickJustFocuses = False        -- pass first click through to app
   } `removeKeys` cbiffleUnwantedKeys
@@ -86,15 +87,15 @@ cbiffleLayout =
   -- A tabbed fullscreen layout that I find useful for web and graphics work.
   ||| rename (icon "layout-tabbed")
              (noBorders $ tabbed shrinkText def
-              { fontName = "xft:Anonymous Pro:size=7"
+              { fontName = "xft:Inconsolata:size=7.5"
               , decoHeight = 30
               , activeColor = "#118811"
               , activeTextColor = "black"
               , inactiveColor = "black"
-              , inactiveTextColor = "#118811"
+              , inactiveTextColor = "#00FF00"
               , activeBorderColor = "#118811"
               , inactiveBorderColor = "black"
-              , windowTitleAddons = [("[", AlignLeft), ("]", AlignRight)]
+              , windowTitleAddons = [(" [", AlignLeft), ("] ", AlignRight)]
               })
   -- XMonad's classic Tall layout, with some tweaks.
   ||| rename (icon "layout-tall") (Tall 1 (3/100) (1/2))
