@@ -143,6 +143,11 @@ cbiffleKeys = actionKeys ++ workspaceKeys ++ windowKeys
       , ((0, xF86XK_AudioMicMute),     muteMic)       -- /
       , ((0, xF86XK_MonBrightnessUp),   raiseBrightness) -- backlight
       , ((0, xF86XK_MonBrightnessDown), lowerBrightness) -- control
+
+      -- Password filler
+      , ((modm,                 xK_p), spawn $ "gopass ls --flat"
+          ++ " | dmenu | xargs --no-run-if-empty gopass show -f"
+          ++ " | head -n 1 | xdotool type --clearmodifiers --file -")
       ]
 
     workspaceKeys = [ ((modm .|. m, k), windows $ f i)
