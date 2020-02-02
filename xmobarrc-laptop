@@ -1,11 +1,15 @@
 Config
-  { font = "xft:Anonymous Pro:size=7,Noto Sans Mono:size=7"
+  { font = "xft:Source Code Pro:size=6.5,Noto Sans Mono:size=7"
+  , additionalFonts =
+    [ "xft:Noto Sans Mono:size=7"
+    , "xft:Source Code Pro:size=6.5:style=Bold"
+    ]
   , position = Top
   , commands = [ Run Date "%a - %Y %b %_d - %H:%M:%S" "theDate" 10
                , Run Wireless "wlp2s0"
-                   [ "-t", "<essid> <qualityvbar>"
-                   , "-L", "50"
-                   , "-H", "80"
+                   [ "-t", "<essid> <fn=1><qualityvbar></fn>"
+                   , "-L", "30"
+                   , "-H", "60"
                    , "-h", "green"
                    , "-l", "red"
                    , "-x", "offline"
@@ -23,23 +27,23 @@ Config
                   , "-o", ""
                   ] 20
                , Run BatteryN ["BAT0"]
-                  [ "-t", "<leftvbar>"
+                  [ "-t", "<fn=1><leftvbar></fn>"
                   , "-L", "10"
                   , "-H", "80"
                   , "-h", "green"
                   , "-l", "red"
                   ] 20 "bat0"
                , Run MultiCpu
-                  [ "-t", "C:<autovbar>"
+                  [ "-t", "C:<fn=1><autovbar></fn>"
                   , "-p", "3"
                   , "-h", "red"
                   ] 10
                , Run Memory
-                  [ "-t", "M:<usedvbar>"
+                  [ "-t", "M:<fn=1><usedvbar></fn>"
                   , "-h", "red"
                   , "-l", "green"
                   ] 20
-               , Run ThermalZone 1 [] 30
+               , Run ThermalZone 5 [] 30
                , Run UnsafeStdinReader ]
-  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal1% %memory%</action> | <action=`xterm -e 'sudo wifi-menu'`>%wlp2s0wi%</action> | %battery% %bat0% | <fc=#FF0000>%theDate%</fc>"
+  , template = "%UnsafeStdinReader% }{<action=`xterm -e top`>%multicpu% %thermal5% %memory%</action> | <action=`xterm -e 'sudo wifi-menu'`>%wlp2s0wi%</action> | %battery% %bat0% | <fn=2><fc=#FF0000>%theDate%</fc></fn>"
   }
